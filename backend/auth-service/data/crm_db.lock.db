@@ -1,0 +1,6 @@
+#FileLock
+#Fri Aug 21 14:27:05 IST 2026
+hostName=Ferrari
+id=1a02389c1887e1c679532f2006873ef956d503f8ab1
+method=file
+server=192.168.1.11\:60167

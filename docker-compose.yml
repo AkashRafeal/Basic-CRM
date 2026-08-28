@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # --- PostgreSQL Database ---
+  crm-postgres:
+    image: postgres:16-alpine
+    container_name: crm-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: crm_db
+      POSTGRES_USER: crm_user
+      POSTGRES_PASSWORD: crm_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - crm_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crm_user -d crm_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - crm-network
+
+  # --- Eureka Service Discovery (Port 8761) ---
+  discovery-service:
+    build:
+      context: ./backend
+      dockerfile: discovery-service/Dockerfile
+    container_name: crm-discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - crm-network
+
+  # --- Authentication Microservice (Port 8081) ---
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: auth-service/Dockerfile
+    container_name: crm-auth-service
+    environment:
+      AUTH_DB_URL: jdbc:postgresql://crm-postgres:5432/crm_db
+      AUTH_DB_USER: crm_user
+      AUTH_DB_PASS: crm_password
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      crm-postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    networks:
+      - crm-network
+
+  # --- User Management Microservice (Port 8082) ---
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: user-service/Dockerfile
+    container_name: crm-user-service
+    environment:
+      USER_DB_URL: jdbc:postgresql://crm-postgres:5432/crm_db
+      USER_DB_USER: crm_user
+      USER_DB_PASS: crm_password
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      crm-postgres:
+        condition: service_healthy
+      discovery-service:
+        condition: service_started
+    ports:
+      - "8082:8082"
+    networks:
+      - crm-network
+
+  # --- Spring Cloud API Gateway (Port 8080) ---
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: api-gateway/Dockerfile
+    container_name: crm-api-gateway
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka/
+    depends_on:
+      - discovery-service
+      - auth-service
+      - user-service
+    ports:
+      - "8080:8080"
+    networks:
+      - crm-network
+
+  # --- React + Vite Frontend (Port 5173) ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crm-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - crm-network
+
+volumes:
+  crm_postgres_data:
+    driver: local
+
+networks:
+  crm-network:
+    driver: bridge

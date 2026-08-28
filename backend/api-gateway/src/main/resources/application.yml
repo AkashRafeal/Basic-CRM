@@ -1,0 +1,211 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Route Auth endpoints to auth-service
+        - id: auth-service
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/api/v1/auth/**
+
+        # Route User & Department Management endpoints to user-service
+        - id: user-service
+          uri: http://127.0.0.1:8082
+          predicates:
+            - Path=/api/v1/users/**, /api/v1/departments/**
+
+        # Route Lead Management endpoints to lead-service
+        - id: lead-service
+          uri: http://127.0.0.1:8083
+          predicates:
+            - Path=/api/v1/leads/**
+
+        # Route Customer Management endpoints to customer-service
+        - id: customer-service
+          uri: http://127.0.0.1:8084
+          predicates:
+            - Path=/api/v1/customers/**
+
+        # Route Task Management endpoints to task-service
+        - id: task-service
+          uri: http://127.0.0.1:8085
+          predicates:
+            - Path=/api/v1/tasks/**
+
+        # Route Follow-Up Management endpoints to followup-service
+        - id: followup-service
+          uri: http://127.0.0.1:8086
+          predicates:
+            - Path=/api/v1/followups/**
+
+        # Route Sales Pipeline & Deals endpoints to pipeline-service
+        - id: pipeline-service
+          uri: http://127.0.0.1:8087
+          predicates:
+            - Path=/api/v1/deals/**
+
+        # Route Reports & Analytics endpoints to analytics-service
+        - id: analytics-service
+          uri: http://127.0.0.1:8088
+          predicates:
+            - Path=/api/v1/analytics/**
+
+        # Route Contact Management endpoints to contact-service
+        - id: contact-service
+          uri: http://127.0.0.1:8089
+          predicates:
+            - Path=/api/v1/contacts/**
+
+        # Route Call Management endpoints to call-service
+        - id: call-service
+          uri: http://127.0.0.1:8090
+          predicates:
+            - Path=/api/v1/calls/**
+
+        # Route Communication Management endpoints to communication-service
+        - id: communication-service
+          uri: http://127.0.0.1:8091
+          predicates:
+            - Path=/api/v1/communications/**
+
+        # Route Product & Catalog Management endpoints to product-service
+        - id: product-service
+          uri: http://127.0.0.1:8092
+          predicates:
+            - Path=/api/v1/products/**, /api/v1/categories/**
+
+        # Route Notes & Activity History endpoints to activity-service
+        - id: activity-service
+          uri: http://127.0.0.1:8093
+          predicates:
+            - Path=/api/v1/notes/**, /api/v1/activities/**
+
+        # Route Appointment, Meeting & Notification Management endpoints to appointment-service
+        - id: appointment-service
+          uri: http://127.0.0.1:8094
+          predicates:
+            - Path=/api/v1/appointments/**, /api/v1/notifications/**
+
+        # Route Swagger docs
+        - id: auth-swagger
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/v3/api-docs/auth/**
+          filters:
+            - RewritePath=/v3/api-docs/auth/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: user-swagger
+          uri: http://127.0.0.1:8082
+          predicates:
+            - Path=/v3/api-docs/users/**
+          filters:
+            - RewritePath=/v3/api-docs/users/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: lead-swagger
+          uri: http://127.0.0.1:8083
+          predicates:
+            - Path=/v3/api-docs/leads/**
+          filters:
+            - RewritePath=/v3/api-docs/leads/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: customer-swagger
+          uri: http://127.0.0.1:8084
+          predicates:
+            - Path=/v3/api-docs/customers/**
+          filters:
+            - RewritePath=/v3/api-docs/customers/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: task-swagger
+          uri: http://127.0.0.1:8085
+          predicates:
+            - Path=/v3/api-docs/tasks/**
+          filters:
+            - RewritePath=/v3/api-docs/tasks/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: followup-swagger
+          uri: http://127.0.0.1:8086
+          predicates:
+            - Path=/v3/api-docs/followups/**
+          filters:
+            - RewritePath=/v3/api-docs/followups/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: pipeline-swagger
+          uri: http://127.0.0.1:8087
+          predicates:
+            - Path=/v3/api-docs/pipeline/**
+          filters:
+            - RewritePath=/v3/api-docs/pipeline/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: analytics-swagger
+          uri: http://127.0.0.1:8088
+          predicates:
+            - Path=/v3/api-docs/analytics/**
+          filters:
+            - RewritePath=/v3/api-docs/analytics/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: contact-swagger
+          uri: http://127.0.0.1:8089
+          predicates:
+            - Path=/v3/api-docs/contacts/**
+          filters:
+            - RewritePath=/v3/api-docs/contacts/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: call-swagger
+          uri: http://127.0.0.1:8090
+          predicates:
+            - Path=/v3/api-docs/calls/**
+          filters:
+            - RewritePath=/v3/api-docs/calls/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: communication-swagger
+          uri: http://127.0.0.1:8091
+          predicates:
+            - Path=/v3/api-docs/communications/**
+          filters:
+            - RewritePath=/v3/api-docs/communications/(?<segment>.*), /v3/api-docs/${segment}
+
+        - id: appointment-swagger
+          uri: http://127.0.0.1:8094
+          predicates:
+            - Path=/v3/api-docs/appointments/**
+          filters:
+            - RewritePath=/v3/api-docs/appointments/(?<segment>.*), /v3/api-docs/${segment}
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://localhost:3000"
+              - "http://127.0.0.1:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.crm.gateway: INFO

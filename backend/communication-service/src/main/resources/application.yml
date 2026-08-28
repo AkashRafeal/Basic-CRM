@@ -1,0 +1,49 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: communication-service
+  datasource:
+    url: ${COMMUNICATION_DB_URL:${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres?sslmode=require&prepareThreshold=0}}
+    username: ${COMMUNICATION_DB_USER:${SPRING_DATASOURCE_USERNAME:postgres.vqoxdxudsoaisqpltxuv}}
+    password: ${COMMUNICATION_DB_PASS:${SPRING_DATASOURCE_PASSWORD:Basic CRM@123}}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 2
+      minimum-idle: 1
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+

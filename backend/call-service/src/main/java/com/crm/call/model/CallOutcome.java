@@ -1,0 +1,15 @@
+package com.crm.call.model;
+
+public enum CallOutcome {
+    INTERESTED,
+    MEETING_BOOKED,
+    QUOTE_REQUESTED,
+    NOT_INTERESTED,
+    WRONG_NUMBER,
+    LEFT_VOICEMAIL,
+    CALLBACK_REQUESTED,
+    DEAL_CLOSED,
+    BUSY_NO_ANSWER,
+    ISSUE_RESOLVED,
+    OTHER
+}

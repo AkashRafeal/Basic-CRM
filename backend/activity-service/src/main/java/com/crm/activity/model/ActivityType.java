@@ -1,0 +1,18 @@
+package com.crm.activity.model;
+
+public enum ActivityType {
+    NOTE_CREATED,
+    NOTE_UPDATED,
+    CALL_LOGGED,
+    EMAIL_SENT,
+    SMS_SENT,
+    MEETING_SCHEDULED,
+    STAGE_CHANGED,
+    STATUS_CHANGED,
+    DEAL_WON,
+    LEAD_CONVERTED,
+    TASK_COMPLETED,
+    FOLLOWUP_LOGGED,
+    STOCK_ADJUSTED,
+    CUSTOM_ACTIVITY
+}
