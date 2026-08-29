@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: basic-crm-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: oregon
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres?sslmode=require&prepareThreshold=0
+      - key: DATABASE_URL
+        value: postgresql://postgres.vqoxdxudsoaisqpltxuv:Basic CRM@123@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres.vqoxdxudsoaisqpltxuv
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: Basic CRM@123
+      - key: JWT_SECRET
+        value: 9a618c6d4883ef07a9e6d0746973e8e24fae6eb5f15d7426b38c230e71cb0a84d41be297374b3353bc07ea015eb6f5eef1411ee85e13d96dd7ffeed47c38bb5d
+      - key: JWT_EXPIRATION_MS
+        value: 86400000
