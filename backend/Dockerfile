@@ -1,4 +1,4 @@
-# Step 1: Build all modules with Java 21
+# Step 1: Build all Maven modules with Java 21
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
