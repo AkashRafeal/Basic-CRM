@@ -27,16 +27,16 @@ export const RefreshFeedbackOverlay: React.FC = () => {
     void document.body.offsetWidth;
     document.body.classList.add('screen-refreshing');
 
-    // End the screen blink after 450ms
+    // End the screen blink after 1000ms (1 second)
     const blinkTimer = setTimeout(() => {
       setIsBlinking(false);
       document.body.classList.remove('screen-refreshing');
-    }, 450);
+    }, 1000);
 
-    // Hide the top notification badge after 1200ms
+    // Hide the top notification badge after 1800ms
     const badgeTimer = setTimeout(() => {
       setShowBadge(false);
-    }, 1200);
+    }, 1800);
 
     return () => {
       clearTimeout(blinkTimer);
@@ -88,34 +88,42 @@ export const RefreshFeedbackOverlay: React.FC = () => {
 
   return (
     <>
-      {/* 1. Full Screen Ambient Refresh Blink / Flash Effect */}
+      {/* 1. Full Screen High-Impact 1-Second Screen Blink Flash */}
       {isBlinking && (
         <div
           key={`screen-blink-${blinkKey}`}
-          className="fixed inset-0 z-[99999] pointer-events-none transition-all duration-300 animate-refresh-blink bg-gradient-to-br from-indigo-500/20 via-sky-400/20 to-purple-500/20"
+          className="fixed inset-0 z-[999999] pointer-events-none transition-all duration-300 animate-one-second-blink bg-white/20 backdrop-brightness-150 backdrop-contrast-125"
         />
       )}
 
-      {/* 2. Top-Edge High-Speed Shimmer Gleam Line */}
+      {/* 2. Full-Screen Glowing Cyan/Indigo Ambient Frame Border Pulse */}
+      {isBlinking && (
+        <div
+          key={`screen-border-${blinkKey}`}
+          className="fixed inset-0 z-[999999] pointer-events-none border-4 border-indigo-400/80 shadow-[inset_0_0_80px_rgba(99,102,241,0.5)] animate-one-second-blink"
+        />
+      )}
+
+      {/* 3. Top-Edge High-Speed Shimmer Gleam Line */}
       {isBlinking && (
         <div
           key={`shimmer-line-${blinkKey}`}
-          className="fixed top-0 left-0 right-0 h-1 z-[100000] pointer-events-none overflow-hidden bg-indigo-500/30"
+          className="fixed top-0 left-0 right-0 h-1.5 z-[1000000] pointer-events-none overflow-hidden bg-indigo-500/40"
         >
-          <div className="w-full h-full bg-gradient-to-r from-transparent via-cyan-300 to-indigo-400 animate-refresh-gleam shadow-[0_0_12px_rgba(56,189,248,0.9)]" />
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-cyan-300 to-indigo-400 animate-refresh-gleam shadow-[0_0_20px_rgba(56,189,248,1)]" />
         </div>
       )}
 
-      {/* 3. Floating Pill Notification Badge for Visual Confirmation */}
+      {/* 4. Floating Pill Notification Badge for Visual Confirmation */}
       {showBadge && (
         <div
           key={`badge-${blinkKey}`}
-          className="fixed top-5 left-1/2 -translate-x-1/2 z-[100000] pointer-events-none transition-all duration-300 ease-out transform animate-bounce"
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-[1000000] pointer-events-none transition-all duration-300 ease-out transform animate-bounce"
         >
-          <div className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-indigo-500/50 text-indigo-200 text-xs font-medium shadow-[0_0_20px_rgba(99,102,241,0.4)] backdrop-blur-md">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+          <div className="flex items-center space-x-2.5 px-4 py-2 rounded-full bg-slate-900/95 border border-indigo-400 text-indigo-100 text-xs sm:text-sm font-semibold shadow-[0_0_30px_rgba(99,102,241,0.6)] backdrop-blur-xl">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-pulse" />
             <span>{message}</span>
-            <RefreshCw className="w-3 h-3 text-cyan-400 animate-spin" />
+            <RefreshCw className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
           </div>
         </div>
       )}
