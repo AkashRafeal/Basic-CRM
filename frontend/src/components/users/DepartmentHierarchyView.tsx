@@ -15,6 +15,7 @@ import {
   PlusCircle,
   Trash2
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../common/RefreshFeedbackOverlay';
 
 export const DepartmentHierarchyView: React.FC = () => {
   const { isAdmin } = useAuth();
@@ -94,8 +95,12 @@ export const DepartmentHierarchyView: React.FC = () => {
           </button>
 
           <button
-            onClick={fetchHierarchy}
+            onClick={() => {
+              fetchHierarchy();
+              triggerRefreshBlink('Department hierarchy refreshed');
+            }}
             disabled={loading}
+            title="Refresh Hierarchy"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />

@@ -21,9 +21,16 @@ export const RefreshFeedbackOverlay: React.FC = () => {
     setShowBadge(true);
     setBlinkKey((prev) => prev + 1);
 
+    // Apply instantaneous screen blink pulse to the entire page body
+    document.body.classList.remove('screen-refreshing');
+    // Trigger reflow to restart CSS animation if clicked in rapid succession
+    void document.body.offsetWidth;
+    document.body.classList.add('screen-refreshing');
+
     // End the screen blink after 450ms
     const blinkTimer = setTimeout(() => {
       setIsBlinking(false);
+      document.body.classList.remove('screen-refreshing');
     }, 450);
 
     // Hide the top notification badge after 1200ms
@@ -34,6 +41,7 @@ export const RefreshFeedbackOverlay: React.FC = () => {
     return () => {
       clearTimeout(blinkTimer);
       clearTimeout(badgeTimer);
+      document.body.classList.remove('screen-refreshing');
     };
   }, []);
 
@@ -84,8 +92,7 @@ export const RefreshFeedbackOverlay: React.FC = () => {
       {isBlinking && (
         <div
           key={`screen-blink-${blinkKey}`}
-          className="fixed inset-0 z-[99999] pointer-events-none transition-all duration-300 animate-refresh-blink bg-gradient-to-br from-indigo-500/25 via-sky-400/20 to-purple-500/25 backdrop-brightness-125"
-          style={{ mixBlendMode: 'screen' }}
+          className="fixed inset-0 z-[99999] pointer-events-none transition-all duration-300 animate-refresh-blink bg-gradient-to-br from-indigo-500/20 via-sky-400/20 to-purple-500/20"
         />
       )}
 
