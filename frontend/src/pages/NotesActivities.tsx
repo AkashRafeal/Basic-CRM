@@ -36,6 +36,7 @@ export const NotesActivities: React.FC = () => {
   const [activities, setActivities] = useState<ActivityLog[]>([]);
   const [stats, setStats] = useState<ActivityStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -175,14 +176,15 @@ export const NotesActivities: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => {
-              fetchData();
+              setIsRefreshing(true);
               triggerRefreshBlink('Notes & Activities refreshed');
+              fetchData();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Notes & Activities"
-            className="flex items-center space-x-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-xl transition-all shadow disabled:opacity-50"
+            className="flex items-center space-x-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-xl transition-all shadow active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
           <button

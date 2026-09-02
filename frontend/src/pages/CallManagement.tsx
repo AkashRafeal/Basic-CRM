@@ -63,6 +63,7 @@ export const CallManagement: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [teamMembers, setTeamMembers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filters & State
   const [searchTerm, setSearchTerm] = useState('');
@@ -280,14 +281,15 @@ export const CallManagement: React.FC = () => {
         <div className="flex items-center flex-wrap gap-2.5">
           <button
             onClick={() => {
-              loadData();
+              setIsRefreshing(true);
               triggerRefreshBlink('Calls refreshed');
+              loadData();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Calls"
-            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-semibold transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-semibold transition-all active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
             <span>Refresh</span>
           </button>
 

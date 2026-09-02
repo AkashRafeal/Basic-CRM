@@ -54,10 +54,17 @@ export const Dashboard: React.FC = () => {
   const [todayFollowUps, setTodayFollowUps] = useState<FollowUp[]>([]);
 
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    triggerRefreshBlink('Dashboard refreshed');
+    fetchDashboardData();
+    setTimeout(() => setIsRefreshing(false), 600);
+  };
 
   const fetchDashboardData = async () => {
     try {
-      setLoading(true);
 
       const isManager = user?.role === 'ROLE_MANAGER';
       const isEmployee = user?.role === 'ROLE_EMPLOYEE';
@@ -216,15 +223,11 @@ export const Dashboard: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => {
-                fetchDashboardData();
-                triggerRefreshBlink('Dashboard refreshed');
-              }}
-              disabled={loading}
+              onClick={handleRefresh}
               title="Refresh Dashboard"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition active:scale-95"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
               <span>Refresh</span>
             </button>
             <Link

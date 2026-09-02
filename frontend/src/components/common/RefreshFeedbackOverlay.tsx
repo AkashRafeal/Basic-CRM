@@ -27,16 +27,16 @@ export const RefreshFeedbackOverlay: React.FC = () => {
     void document.body.offsetWidth;
     document.body.classList.add('screen-refreshing');
 
-    // End the screen blink after 1000ms (1 second)
+    // End the screen blink after exactly 1000ms (1 second)
     const blinkTimer = setTimeout(() => {
       setIsBlinking(false);
       document.body.classList.remove('screen-refreshing');
     }, 1000);
 
-    // Hide the top notification badge after 1800ms
+    // Hide the top notification badge after 1000ms
     const badgeTimer = setTimeout(() => {
       setShowBadge(false);
-    }, 1800);
+    }, 1000);
 
     return () => {
       clearTimeout(blinkTimer);

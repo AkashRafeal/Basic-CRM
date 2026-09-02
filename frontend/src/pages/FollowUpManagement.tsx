@@ -68,6 +68,7 @@ export const FollowUpManagement: React.FC = () => {
   const [outcomeFilter, setOutcomeFilter] = useState<FollowUpOutcome | ''>('');
   const [priorityFilter, setPriorityFilter] = useState<FollowUpPriority | ''>('');
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Modals state
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -296,14 +297,15 @@ export const FollowUpManagement: React.FC = () => {
 
           <button
             onClick={() => {
-              fetchFollowUpsAndStats();
+              setIsRefreshing(true);
               triggerRefreshBlink('Follow-ups refreshed');
+              fetchFollowUpsAndStats();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Follow-ups"
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition disabled:opacity-50"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
             <span className="hidden sm:inline">Refresh</span>
           </button>
 

@@ -39,6 +39,7 @@ export const ProductManagement: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<ProductStatus | ''>('');
   const [billingFilter, setBillingFilter] = useState<BillingFrequency | ''>('');
   const [lowStockFilter, setLowStockFilter] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   // Modals state
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
@@ -141,15 +142,16 @@ export const ProductManagement: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => {
+              setIsRefreshing(true);
+              triggerRefreshBlink('Products refreshed');
               fetchCatalogData();
               fetchCategories();
-              triggerRefreshBlink('Products refreshed');
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Products"
-            className="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl font-semibold text-sm flex items-center gap-2 transition disabled:opacity-50"
+            className="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl font-semibold text-sm flex items-center gap-2 transition active:scale-95"
           >
-            <RefreshCw className={`w-4 h-4 text-slate-400 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-4 h-4 text-slate-400 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
             <span>Refresh</span>
           </button>
 

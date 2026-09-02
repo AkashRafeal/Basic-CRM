@@ -317,11 +317,11 @@ export const CommunicationManagement: React.FC = () => {
           <button
             onClick={() => {
               setRefreshing(true);
-              fetchData();
               triggerRefreshBlink('Communications refreshed');
+              fetchData();
+              setTimeout(() => setRefreshing(false), 600);
             }}
-            disabled={refreshing}
-            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-slate-200 hover:bg-slate-800 transition-colors active:scale-95"
             title="Refresh inbox"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-indigo-400' : ''}`} />

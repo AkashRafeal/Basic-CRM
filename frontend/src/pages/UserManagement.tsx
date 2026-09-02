@@ -36,6 +36,7 @@ export const UserManagement: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [viewTab, setViewTab] = useState<'directory' | 'hierarchy'>('directory');
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -193,14 +194,15 @@ export const UserManagement: React.FC = () => {
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
           <button
             onClick={() => {
-              fetchUsers();
+              setIsRefreshing(true);
               triggerRefreshBlink('Users refreshed');
+              fetchUsers();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={isLoading}
             title="Refresh Users"
-            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition whitespace-nowrap"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition whitespace-nowrap active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
             <span>Refresh</span>
           </button>
 

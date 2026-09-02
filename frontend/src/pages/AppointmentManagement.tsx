@@ -40,6 +40,7 @@ export const AppointmentManagement: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [stats, setStats] = useState<AppointmentStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filters & Search
   const [search, setSearch] = useState('');
@@ -306,14 +307,15 @@ export const AppointmentManagement: React.FC = () => {
           {/* Refresh Button */}
           <button
             onClick={() => {
-              fetchData();
+              setIsRefreshing(true);
               triggerRefreshBlink('Appointments refreshed');
+              fetchData();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Appointments"
-            className="flex items-center space-x-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
+            className="flex items-center space-x-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition-all shadow-sm active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
 

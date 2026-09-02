@@ -58,6 +58,7 @@ export const CustomerManagement: React.FC = () => {
   const [stats, setStats] = useState<CustomerStats | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filters & Search
   const [search, setSearch] = useState('');
@@ -357,14 +358,15 @@ export const CustomerManagement: React.FC = () => {
 
           <button
             onClick={() => {
-              fetchCustomersAndStats();
+              setIsRefreshing(true);
               triggerRefreshBlink('Customers refreshed');
+              fetchCustomersAndStats();
+              setTimeout(() => setIsRefreshing(false), 600);
             }}
-            disabled={loading}
             title="Refresh Customers"
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition disabled:opacity-50"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition active:scale-95"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-indigo-400' : ''}`} />
             <span className="hidden sm:inline">Refresh</span>
           </button>
 
