@@ -23,10 +23,12 @@ import { ReportsAnalytics } from './pages/ReportsAnalytics';
 import { Profile } from './pages/Profile';
 
 import { UpcomingMeetingAlertBanner } from './components/UpcomingMeetingAlertBanner';
+import { RefreshFeedbackOverlay } from './components/common/RefreshFeedbackOverlay';
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+      <RefreshFeedbackOverlay />
       <Navbar />
       <UpcomingMeetingAlertBanner />
       <div className="flex-1 flex">

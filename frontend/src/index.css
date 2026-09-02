@@ -53,4 +53,46 @@ input:-webkit-autofill:active {
   color: #ffffff !important;
 }
 
+/* Screen Blink & Shimmer Wave on Data Refresh */
+@keyframes screenRefreshBlink {
+  0% {
+    opacity: 0;
+    transform: scale(0.998);
+  }
+  25% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes refreshTopGleam {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-refresh-blink {
+  animation: screenRefreshBlink 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-refresh-gleam {
+  animation: refreshTopGleam 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
 

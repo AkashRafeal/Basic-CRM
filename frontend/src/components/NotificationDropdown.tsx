@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { notificationService, NotificationItem } from '../services/notificationService';
 import { productApi } from '../api/productApi';
+import { triggerRefreshBlink } from './common/RefreshFeedbackOverlay';
 
 interface NotificationDropdownProps {
   onOpenAppointment?: (appointmentId: number) => void;
@@ -342,6 +343,18 @@ export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onOp
             </div>
 
             <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => {
+                  fetchNotifications();
+                  triggerRefreshBlink('Notifications refreshed');
+                }}
+                disabled={loading}
+                className="p-1.5 text-slate-400 hover:text-indigo-300 rounded-lg hover:bg-slate-800/80 transition-colors disabled:opacity-50"
+                title="Refresh notifications"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+              </button>
+
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAllAsRead}

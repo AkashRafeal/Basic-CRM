@@ -20,7 +20,9 @@ import {
   UploadCloud,
   FileSpreadsheet,
   ChevronDown,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 import { appointmentApi } from '../api/appointmentApi';
 import {
   Appointment,
@@ -301,6 +303,20 @@ export const AppointmentManagement: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2.5 flex-wrap">
+          {/* Refresh Button */}
+          <button
+            onClick={() => {
+              fetchData();
+              triggerRefreshBlink('Appointments refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Appointments"
+            className="flex items-center space-x-1.5 px-3 py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white rounded-xl text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${loading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </button>
+
           {/* Export Dropdown */}
           <div className="relative" ref={exportDropdownRef}>
             <button

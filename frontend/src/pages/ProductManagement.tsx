@@ -25,6 +25,7 @@ import { StockAdjustmentModal } from '../components/products/StockAdjustmentModa
 import { ProductDetailModal } from '../components/products/ProductDetailModal';
 import { CreateCategoryModal } from '../components/products/CreateCategoryModal';
 import { CategoryDirectoryModal } from '../components/products/CategoryDirectoryModal';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const ProductManagement: React.FC = () => {
   const { isAdmin, isManager } = useAuth();
@@ -138,6 +139,20 @@ export const ProductManagement: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              fetchCatalogData();
+              fetchCategories();
+              triggerRefreshBlink('Products refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Products"
+            className="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-xl font-semibold text-sm flex items-center gap-2 transition disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 text-slate-400 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <span>Refresh</span>
+          </button>
+
           {(isAdmin || isManager) && (
             <a
               href={productApi.exportCsvUrl()}
@@ -355,6 +370,7 @@ export const ProductManagement: React.FC = () => {
                 setStatusFilter('');
                 setBillingFilter('');
                 setLowStockFilter(false);
+                triggerRefreshBlink('Filters reset');
               }}
               className="p-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-white rounded-xl transition"
               title="Reset Filters"

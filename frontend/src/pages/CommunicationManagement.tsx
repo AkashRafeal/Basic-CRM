@@ -50,6 +50,7 @@ import {
   Trash2,
   Maximize2,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const CommunicationManagement: React.FC = () => {
   const { user, isAdmin, isManager, isEmployee } = useAuth();
@@ -317,12 +318,14 @@ export const CommunicationManagement: React.FC = () => {
             onClick={() => {
               setRefreshing(true);
               fetchData();
+              triggerRefreshBlink('Communications refreshed');
             }}
             disabled={refreshing}
-            className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-300 hover:text-slate-200 hover:bg-slate-800 transition-colors"
             title="Refresh inbox"
           >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-indigo-400' : ''}`} />
+            <span>Refresh</span>
           </button>
 
           {/* Admin Gateway Config Button */}

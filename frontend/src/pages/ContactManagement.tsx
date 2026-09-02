@@ -49,7 +49,9 @@ import {
   RotateCcw,
   Lock,
   UserCheck,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 import { useAuth } from '../context/AuthContext';
 
@@ -335,6 +337,20 @@ export const ContactManagement: React.FC = () => {
               <span className="hidden sm:inline">Export Protected</span>
             </div>
           )}
+
+          {/* Refresh Contacts */}
+          <button
+            onClick={() => {
+              loadData();
+              triggerRefreshBlink('Contacts refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Contacts"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
 
           {/* Add Contact (All Roles) */}
           <button

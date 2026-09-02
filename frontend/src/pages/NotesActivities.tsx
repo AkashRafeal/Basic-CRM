@@ -19,7 +19,9 @@ import {
   MessageSquare,
   TrendingUp,
   Edit2,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 import { useAuth } from '../context/AuthContext';
 import { activityApi } from '../api/activityApi';
 import { Note, ActivityLog, ActivityStats, EntityType, ActivityType, UpdateNotePayload } from '../types/activity';
@@ -171,6 +173,18 @@ export const NotesActivities: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-3">
+          <button
+            onClick={() => {
+              fetchData();
+              triggerRefreshBlink('Notes & Activities refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Notes & Activities"
+            className="flex items-center space-x-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-xl transition-all shadow disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${loading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </button>
           <button
             onClick={() => setIsActivityModalOpen(true)}
             className="flex items-center space-x-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-sm font-medium rounded-xl transition-all shadow"

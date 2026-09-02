@@ -26,6 +26,7 @@ import {
   UserCheck,
   AlertTriangle
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const UserManagement: React.FC = () => {
   const { user: currentUser, isAdmin } = useAuth();
@@ -191,8 +192,12 @@ export const UserManagement: React.FC = () => {
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
           <button
-            onClick={fetchUsers}
+            onClick={() => {
+              fetchUsers();
+              triggerRefreshBlink('Users refreshed');
+            }}
             disabled={isLoading}
+            title="Refresh Users"
             className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition whitespace-nowrap"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />

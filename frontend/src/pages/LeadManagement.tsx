@@ -25,7 +25,9 @@ import {
   AlertTriangle,
   ExternalLink,
   Zap,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 const KANBAN_STAGES: { status: LeadStatus; label: string; color: string; borderDrop: string }[] = [
   { status: 'NEW', label: 'New Inquiries', color: 'border-blue-500/40 text-blue-400', borderDrop: 'border-blue-500 bg-blue-950/20' },
@@ -290,6 +292,19 @@ export const LeadManagement: React.FC = () => {
               <span className="hidden sm:inline">Table List</span>
             </button>
           </div>
+
+          <button
+            onClick={() => {
+              fetchLeadsAndStats();
+              triggerRefreshBlink('Leads refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Leads"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
 
           <button
             onClick={() => setIsCreateOpen(true)}

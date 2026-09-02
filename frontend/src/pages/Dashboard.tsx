@@ -35,6 +35,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const Dashboard: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -215,11 +216,15 @@ export const Dashboard: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={fetchDashboardData}
+              onClick={() => {
+                fetchDashboardData();
+                triggerRefreshBlink('Dashboard refreshed');
+              }}
               disabled={loading}
+              title="Refresh Dashboard"
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition disabled:opacity-50"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
               <span>Refresh</span>
             </button>
             <Link

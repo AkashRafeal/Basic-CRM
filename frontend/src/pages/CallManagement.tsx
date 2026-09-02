@@ -51,7 +51,9 @@ import {
   Trash2,
   Eye,
   CheckSquare,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const CallManagement: React.FC = () => {
   const [calls, setCalls] = useState<CallLog[]>([]);
@@ -276,6 +278,19 @@ export const CallManagement: React.FC = () => {
         </div>
 
         <div className="flex items-center flex-wrap gap-2.5">
+          <button
+            onClick={() => {
+              loadData();
+              triggerRefreshBlink('Calls refreshed');
+            }}
+            disabled={loading}
+            title="Refresh Calls"
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-semibold transition-all disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <span>Refresh</span>
+          </button>
+
           <button
             onClick={() => setIsCallerIdModalOpen(true)}
             className="px-3.5 py-2.5 rounded-xl bg-indigo-950/40 hover:bg-indigo-900/50 border border-indigo-500/30 text-indigo-300 text-xs font-semibold flex items-center gap-2 transition-all shadow-sm group"

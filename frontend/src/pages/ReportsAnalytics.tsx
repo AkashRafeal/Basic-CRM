@@ -27,6 +27,7 @@ import {
   UserCheck,
   Package,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 export const ReportsAnalytics: React.FC = () => {
   const { user, isAdmin, isManager, isEmployee } = useAuth();
@@ -127,12 +128,16 @@ export const ReportsAnalytics: React.FC = () => {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <button
-            onClick={fetchReports}
+            onClick={() => {
+              fetchReports();
+              triggerRefreshBlink('Analytics refreshed');
+            }}
             disabled={loading}
-            className="p-2 rounded-xl text-slate-300 bg-slate-900 border border-slate-800 hover:bg-slate-800 transition disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 border border-slate-800 hover:bg-slate-800 transition disabled:opacity-50"
             title="Refresh Reports"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
+            <span>Refresh</span>
           </button>
 
           {/* Export Action Buttons / Anti-Theft Indicators */}

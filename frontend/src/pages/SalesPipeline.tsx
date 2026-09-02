@@ -43,7 +43,9 @@ import {
   ShieldCheck,
   Users,
   UserCheck,
+  RefreshCw,
 } from 'lucide-react';
+import { triggerRefreshBlink } from '../components/common/RefreshFeedbackOverlay';
 
 const KANBAN_STAGES: { stage: DealStage; label: string; dot: string; prob: string }[] = [
   { stage: 'QUALIFICATION', label: 'Qualification', dot: 'bg-slate-400', prob: '10%' },
@@ -412,6 +414,18 @@ export const SalesPipeline: React.FC = () => {
               <span>Table</span>
             </button>
           </div>
+
+          <button
+            onClick={() => {
+              fetchDealsAndStats();
+              triggerRefreshBlink('Pipeline refreshed');
+            }}
+            title="Refresh Pipeline"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700 transition"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
 
           <button
             onClick={() => setIsCreateOpen(true)}
